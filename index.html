@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XLAW Store — Faizan Ali</title>
 
-<!-- FAVICON (The Tab Logo) -->
 <link rel="icon" type="image/png" href="logo.png">
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
@@ -35,12 +34,6 @@
     cursor: none;
   }
 
-  /* ===== MAIN CONTENT SETUP ===== */
-  #main-content {
-    opacity: 1;
-    filter: none;
-  }
-
   /* ===== TRANSITIONS & CURSOR ===== */
   .reveal-section {
     opacity: 0;
@@ -48,6 +41,8 @@
     transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .reveal-section.active { opacity: 1; transform: translateY(0); }
+
+  .static-section { opacity: 1; transform: none; }
 
   .cursor {
     position: fixed;
@@ -100,12 +95,12 @@
     position: absolute;
     left: 8%; top: 50%; transform: translateY(-50%);
     z-index: 5;
+    animation: fade-left 1.2s ease 0.5s both;
   }
 
-  .no-anim {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: translateY(-50%) translateX(0) !important;
+  @keyframes fade-left {
+    from { opacity: 0; transform: translateY(-50%) translateX(-40px); }
+    to   { opacity: 1; transform: translateY(-50%) translateX(0); }
   }
 
   .brand-name {
@@ -114,11 +109,18 @@
     font-weight: 900;
     line-height: 0.9;
     letter-spacing: 0.05em;
-    background: linear-gradient(135deg, #fff 0%, var(--gold-light) 40%, var(--red-bright) 80%, var(--red-mid) 100%);
+    background: linear-gradient(135deg, #fff 0%, var(--gold-light) 25%, var(--red-bright) 50%, var(--gold-light) 75%, #fff 100%);
+    background-size: 400% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: textShine 8s linear infinite;
     filter: drop-shadow(0 0 30px rgba(192,57,43,0.6));
+  }
+
+  @keyframes textShine {
+    0% { background-position: 0% center; }
+    100% { background-position: 400% center; }
   }
 
   .brand-sub {
@@ -204,28 +206,53 @@
   }
   @keyframes bounce { 0%,100%{ transform: rotate(45deg) translateY(0); } 50%{ transform: rotate(45deg) translateY(4px); } }
 
-  /* ===== SHOWREEL SECTION (NEW) ===== */
+  /* ===== SHOWREEL SECTION WITH BREATHING BORDER ===== */
   #showreel { 
-    background: #050505; 
+    background: radial-gradient(ellipse at 50% 0%, #2a0505 0%, #0d0202 50%, #050505 100%); 
     padding: 100px 8%; 
     text-align: center;
     border-bottom: 1px solid rgba(122,26,26,0.2);
   }
+
   .showreel-container {
     max-width: 1000px;
     margin: 40px auto 0;
-    border: 1px solid rgba(192, 57, 43, 0.3);
-    box-shadow: 0 0 40px rgba(192, 57, 43, 0.1);
+    position: relative;
+    border-radius: 8px;
+    padding: 2px;
+    background: var(--red-vine);
+    box-shadow: 0 0 20px rgba(192, 57, 43, 0.4);
+    animation: borderBreath 3s ease-in-out infinite;
+    overflow: hidden;
   }
+
+  @keyframes borderBreath {
+    0%, 100% { 
+      box-shadow: 0 0 15px rgba(192, 57, 43, 0.3), inset 0 0 5px rgba(192, 57, 43, 0.2);
+      background: var(--red-deep);
+    }
+    50% { 
+      box-shadow: 0 0 40px rgba(192, 57, 43, 0.7), inset 0 0 15px rgba(231, 76, 60, 0.4);
+      background: var(--red-bright);
+    }
+  }
+
   .video-wrapper {
     position: relative;
     padding-bottom: 56.25%;
     height: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #000;
   }
   .video-wrapper iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
 
-  /* ===== WORK SECTION ===== */
-  #work { background: #0a0101; padding: 80px 0 100px; position: relative; }
+  /* ===== WORK SECTION (Portfolio) ===== */
+  #work { 
+    background: #050505; 
+    padding: 80px 0 100px; 
+    position: relative; 
+  }
   .section-header { text-align: center; margin-bottom: 70px; }
   .section-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 4vw, 3.5rem); color: #fff; }
   
@@ -306,10 +333,9 @@
   <div class="cursor" id="cursor"></div>
   <div class="cursor-ring" id="cursorRing"></div>
 
-  <!-- HERO SECTION -->
   <section id="hero">
     <div class="particles" id="particles"></div>
-    <div class="hero-left no-anim">
+    <div class="hero-left">
       <div class="brand-name">XLAW<br>STORE</div>
       <div class="hero-divider"></div>
       <div class="brand-sub">Faizan Ali</div>
@@ -329,8 +355,7 @@
     <div class="scroll-hint"><span>Scroll</span><div class="scroll-arrow"></div></div>
   </section>
 
-  <!-- SHOWREEL SECTION (NEW) -->
-  <div class="reveal-section">
+  <div class="static-section">
     <section id="showreel">
       <h2 class="section-title">Showreel</h2>
       <div style="width: 60px; height: 2px; background: var(--red-bright); margin: 20px auto;"></div>
@@ -338,22 +363,19 @@
       
       <div class="showreel-container">
         <div class="video-wrapper">
-          <!-- PASTE YOUR SHOWREEL LINK HERE -->
           <iframe src="https://www.youtube.com/embed/N9tUja7iP6w?rel=0&modestbranding=1" allowfullscreen></iframe>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- PORTFOLIO SECTION -->
-  <div class="reveal-section">
+  <div class="static-section">
     <section id="work">
       <div class="section-header">
         <h2 class="section-title">Portfolio</h2>
         <p style="color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase; font-size: 0.7rem; margin-top: 10px;">High-Performance Visual Production</p>
       </div>
 
-      <!-- Gaming Highlights -->
       <div class="category-block">
         <div class="category-headline"><div class="cat-label">Gaming <span style="font-weight:300; font-family:'Rajdhani'">Highlights</span></div><div class="cat-line"></div></div>
         <div class="video-grid">
@@ -363,7 +385,6 @@
         </div>
       </div>
 
-      <!-- 3D Animation -->
       <div class="category-block">
         <div class="category-headline">
           <div class="cat-label">3D Animation <span style="font-weight:300; font-family:'Rajdhani'">Rosters & Montages</span></div>
@@ -386,7 +407,6 @@
         </div>
       </div>
 
-      <!-- Vertical Content -->
       <div class="category-block">
         <div class="category-headline"><div class="cat-label">Vertical <span style="font-weight:300; font-family:'Rajdhani'">Content (VSL & Commercials)</span></div><div class="cat-line"></div></div>
         <div class="vertical-grid">
@@ -396,7 +416,6 @@
         </div>
       </div>
 
-      <!-- Documentary & VLOG Content -->
       <div class="category-block">
         <div class="category-headline"><div class="cat-label">Documentary <span style="font-weight:300; font-family:'Rajdhani'">Storytelling</span></div><div class="cat-line"></div></div>
         <div class="video-grid">
@@ -416,7 +435,6 @@
         </div>
       </div>
 
-      <!-- Thumbnails Gallery -->
       <div class="category-block">
         <div class="category-headline">
           <div class="cat-label">Thumbnails <span style="font-weight:300; font-family:'Rajdhani'">Gallery</span></div>
@@ -437,7 +455,6 @@
     </section>
   </div>
 
-  <!-- CONTACT SECTION -->
   <div class="reveal-section">
     <section id="contact">
       <h2 class="section-title">Get In Touch</h2>
@@ -461,13 +478,11 @@
 </div>
 
 <script>
-// SCROLL REVEAL
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal-section').forEach(section => observer.observe(section));
 
-// CUSTOM CURSOR
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
 let mx = 0, my = 0, rx = 0, ry = 0;
@@ -481,7 +496,6 @@ document.addEventListener('mousemove', e => {
   requestAnimationFrame(animRing);
 })();
 
-// BACKGROUND PARTICLES
 const pContainer = document.getElementById('particles');
 for (let i = 0; i < 25; i++) {
   const p = document.createElement('div');
@@ -490,7 +504,6 @@ for (let i = 0; i < 25; i++) {
   pContainer.appendChild(p);
 }
 
-// TAGLINE ROTATION
 const tags = ["Visual Strategist", "3D Motion Designer", "Thumbnail Artist", "VSL Expert"];
 let currentTagIndex = 0;
 const tagElement = document.getElementById('rotatingTagline');
